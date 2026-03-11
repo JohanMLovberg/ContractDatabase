@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "entry": "./lib/webparts/contractDatabase/ContractDatabaseWebPart.js",
+      "manifest": "./src/webparts/contractDatabase/ContractDatabaseWebPart.manifest.json",
+      "outputPath": "./dist/contract-database-web-part.js"
+    }
+  ],
+  "externals": {}
+}

@@ -1,0 +1,88 @@
+.formContainer {
+  border: 1px solid #c8c8c8;
+  max-width: 900px;
+  background-color: #ffffff;
+  text-align: start;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 8px;
+  background-color: #f7f7f7;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 8px;
+  position: relative;
+}
+
+.title {
+  padding: 10px;
+  font-size: 36px;
+  font-weight: 600;
+  margin-left: 50px;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.formRow:last-child {
+  border-bottom: none;
+}
+
+.formLabel {
+  flex: 1;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.formControl {
+  flex: 2;
+}
+
+.formControl input[type="text"],
+.formControl input[type="number"],
+.formControl select {
+  width: 100%;
+  padding: 4px 6px;
+  box-sizing: border-box;
+}
+
+.formControl label {
+  font-weight: normal;
+}
+
+.error {
+  color: #a80000;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 50px;
+  padding-left: 250px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.buttonRow button {
+  padding: 3px 40px;
+  border-radius: 5%;
+  height: 40px;
+  cursor: pointer;
+}
+
+.required {
+  color: #fe3a4f;
+  padding-right: 4px;
+  padding-left: 4px;
+}

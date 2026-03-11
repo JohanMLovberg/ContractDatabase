@@ -1,0 +1,8 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "version": "1.4.1",
+    "libraryName": "contract-database",
+    "libraryId": "60b1dbba-2e2b-463f-b7e2-cbf1afd43e2e",
+    "environment": "onprem"
+  }
+}
