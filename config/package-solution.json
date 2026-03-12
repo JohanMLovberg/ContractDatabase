@@ -3,7 +3,8 @@
   "solution": {
     "name": "contract-database-client-side-solution",
     "id": "60b1dbba-2e2b-463f-b7e2-cbf1afd43e2e",
-    "version": "1.0.0.0"
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
   },
   "paths": {
     "zippedPackage": "solution/contract-database.sppkg"
