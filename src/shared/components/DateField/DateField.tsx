@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IDateFieldProps } from "../../../models/FieldModel";
 
-export default function DateField(props: IDateFieldProps) {
+export default function DateField(props: IDateFieldProps): JSX.Element {
   return (
     <div className="formRow">
       <div className="formLabel">

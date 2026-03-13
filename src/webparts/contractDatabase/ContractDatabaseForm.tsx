@@ -96,7 +96,7 @@ export default class ContractDataBaseForm extends React.Component<
     return await this.logic.getUsers(filterText);
   };
 
-  private convertPrefilledData(data) {
+  private convertPrefilledData(data): void {
     this.setState({
       form: data
     });

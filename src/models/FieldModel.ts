@@ -18,7 +18,6 @@ export interface ISearchOptions<T> {
   onSelect?: (item: T) => void;
 }
 
-
 export interface IRadioGroupFieldProps {
   name: string;
   label: string;
@@ -96,4 +95,9 @@ export interface IUserPickerProps {
 
 export interface IUserPickerState {
   selectedItems: IPersonaProps[];
+}
+
+export interface IUserHoverCardProps {
+  item: IPersonaProps;
+  children?: React.ReactNode;
 }

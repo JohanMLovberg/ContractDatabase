@@ -2,7 +2,7 @@ import { IRadioGroupFieldProps } from "../../../models/FieldModel";
 import RadioButton from "../RadioButton/RadioButton";
 import * as React from "react";
 
-export function RadioGroupField(props: IRadioGroupFieldProps) {
+export function RadioGroupField(props: IRadioGroupFieldProps): JSX.Element {
   const { name, label, value, required, underLabel, onChange } = props;
 
   return (
