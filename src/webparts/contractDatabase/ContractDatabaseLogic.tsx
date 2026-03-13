@@ -3,9 +3,14 @@ import { IDepartment } from "../../mock/departments";
 import contractBaseApi from "../../services/ContractDatabaseApi";
 import { formatDateToSPFx } from "../../utils/dateUtils";
 import { APIResponse } from "../../models/ApiModel";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 export class ContractFormLogic {
-  private api = new contractBaseApi();
+  private api: contractBaseApi;
+
+    constructor(context: WebPartContext) {
+    this.api = new contractBaseApi(context.pageContext.web.absoluteUrl);
+  }
 
   public createEmptyForm(): ContractFormData {
     return {

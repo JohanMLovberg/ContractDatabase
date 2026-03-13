@@ -11,12 +11,14 @@ export default class ContractDataBaseForm extends React.Component<
   IContractFormProps,
   IContractFormState
 > {
-  private logic = new ContractFormLogic();
+  private logic: ContractFormLogic;
   private id = undefined;
-  
+
   constructor(props: IContractFormProps) {
     super(props);
-    
+
+    this.logic = new ContractFormLogic(this.props.context);
+
     this.state = {
       form: this.logic.createEmptyForm(),
       errors: {},
