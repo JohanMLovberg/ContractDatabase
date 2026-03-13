@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IRadioButtonProps } from "../../../models/FieldModel";
 
-export default function RadioButton(props: IRadioButtonProps) {
+export default function RadioButton(props: IRadioButtonProps): JSX.Element {
   return (
     <label>
       <input

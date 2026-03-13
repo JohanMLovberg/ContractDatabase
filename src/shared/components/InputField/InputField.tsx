@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IInputFieldProps } from "../../../models/FieldModel";
 
-export default function InputField(props: IInputFieldProps) {
+export default function InputField(props: IInputFieldProps): JSX.Element {
   return (
     <div className="formRow">
       <div className="formLabel">

@@ -12,7 +12,7 @@ export default class UserPicker extends React.Component<IUserPickerProps, IUserP
     };
   }
 
-	public componentDidUpdate(prevProps: IUserPickerProps) {
+	public componentDidUpdate(prevProps: IUserPickerProps): void {
 		if (this.props.clearSelection !== prevProps.clearSelection) {
 			this.clearSelection();
 		}
@@ -34,7 +34,7 @@ export default class UserPicker extends React.Component<IUserPickerProps, IUserP
 		}
 	};
 
-	private clearSelection () {
+	private clearSelection(): void {
 		this.setState({ selectedItems: [] });
 
 		if (this.props.onUserSelected) {

@@ -2,7 +2,7 @@ import * as React from "react";
 import { ICheckboxProps } from "../../../models/FieldModel";
 
 
-export default function Checkbox(props: ICheckboxProps) {
+export default function Checkbox(props: ICheckboxProps): JSX.Element {
   return (
     <div className="field">
       <label>

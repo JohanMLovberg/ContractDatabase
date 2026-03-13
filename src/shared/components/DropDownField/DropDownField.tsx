@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IDropDownFieldProps } from "../../../models/FieldModel";
 
-export default function DropDownField(props: IDropDownFieldProps) {
+export default function DropDownField(props: IDropDownFieldProps): JSX.Element {
   const {
     name,
     label,
