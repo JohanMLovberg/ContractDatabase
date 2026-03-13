@@ -1,13 +1,8 @@
 import * as React from "react";
 import "./HoverCard.scss";
-import { IPersonaProps } from "office-ui-fabric-react";
+import { IUserHoverCardProps } from "../../../models/FieldModel";
 
-export interface IUserHoverCardProps {
-  item: IPersonaProps;
-  children?: React.ReactNode;
-}
-
-export default function HoverCard(props: IUserHoverCardProps) {
+export default function HoverCard(props: IUserHoverCardProps): JSX.Element {
   const { item, children } = props;
 
   return (
