@@ -4,6 +4,7 @@ import ApiClient from "./ApiClient";
 export default class BaseApi {
   protected apiClient: ApiClient;
 
+	
   constructor(baseUrl: string = 'https://jsonplaceholder.typicode.com') {
     this.apiClient = new ApiClient(baseUrl);
   }

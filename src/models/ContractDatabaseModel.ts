@@ -1,24 +1,24 @@
 import { IDepartment } from "../mock/departments";
 import { IPersonaProps } from 'office-ui-fabric-react';
-import { ITypeOfContract } from "../mock/TypeOfContract";
-import { IContractBasis } from "../mock/contractBasis";
+import { IDropDownData } from "./ConstsModel";
 
 export interface ContractFormData {
-  title: string;
-  contractOwner: string;
-  originalContractOwner: string;
-  department: string;
-  value: string;
-  startDate: string;
-  endDate: string;
-  typeOfContract: string;
-  contractBasis: string;
-  agreementNumber: string;
-  vendor: string;
-  vendorId: string;
-  archiveLink: string;
-  dataProcessAgreement: boolean;
-  labourClause: boolean;
+  Title: string;
+  ContractOwner: string;
+  OriginalContractOwner: string;
+  Department: string;
+  Value: string;
+  StartDate: string;
+  EndDate: string;
+  TypeOfContract: string;
+  ContractBasis: string;
+  AgreementNumber: string;
+  Vendor: string;
+  VendorID: string;
+  ArchiveLink: string;
+  DataProcessingAgreement: boolean;
+  LabourClause: boolean;
+  LabourClauseRiskAssessment: string;
 }
 
 export interface IContractFormProps {
@@ -29,8 +29,8 @@ export interface IContractFormState {
   form: ContractFormData;
   errors: { [key: string]: string };
   departments: IDepartment[];
-  typeOfContract: ITypeOfContract[];
-  contractBasis: IContractBasis[];
+  typeOfContract: IDropDownData[];
+  contractBasis: IDropDownData[];
   apiMessage?: string;
   resetUser: boolean
 }
@@ -39,8 +39,8 @@ export interface IViewProps {
   form: ContractFormData;
   errors: { [key: string]: string };
   departments: IDepartment[];
-  typeOfContract: ITypeOfContract[];
-  contractBasis: IContractBasis[];
+  typeOfContract: IDropDownData[];
+  contractBasis: IDropDownData[];
   apiMessage?: string;
   onInputChange: (name: string, value: any) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
