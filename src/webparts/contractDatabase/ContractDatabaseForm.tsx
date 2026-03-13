@@ -80,6 +80,7 @@ export default class ContractDataBaseForm extends React.Component<
         apiMessage: response.message,
         resetUser: !this.state.resetUser
       });
+      this.logic.redirectToSource();
     } else {
       this.setState({
         apiMessage: response.message
@@ -88,12 +89,7 @@ export default class ContractDataBaseForm extends React.Component<
   };
 
   private handleCancel = () => {
-    this.setState({
-      form: this.logic.createEmptyForm(),
-      errors: {},
-      apiMessage: "",
-      resetUser: !this.state.resetUser
-    });
+    this.logic.redirectToSource();
   };
 
   private handleResolveUserSuggestions = async (filterText: string) => {

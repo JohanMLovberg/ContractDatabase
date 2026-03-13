@@ -94,4 +94,14 @@ export class ContractFormLogic {
   public async getContractForm(id?: number): Promise<ContractFormData> {
     return this.api.getContractFormById(id);
   }
+
+  public redirectToSource = () => {
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("Source");
+    if (source) {
+      window.location.href = source;
+    } else {
+      window.location.href = `${window.location.origin}/Lists/contractdatabase/AllItems.aspx`;
+    }
+  };
 }
