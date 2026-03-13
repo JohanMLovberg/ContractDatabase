@@ -5,7 +5,6 @@ export interface IPerson {
 }
 import { PeoplePickerEntity, PeoplePickerEntityData } from 'sp-pnp-js';
 
-
 export const people: IPerson [] = [
   {
     name: "Anna Larsen",

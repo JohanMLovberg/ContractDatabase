@@ -5,17 +5,18 @@ import {
 } from "../../models/ContractDatabaseModel";
 import ContractFormView from "./ContractDatabaseView";
 import { ContractFormLogic } from "./ContractDatabaseLogic";
+import { APIResponse } from "../../models/ApiModel";
 
 export default class ContractDataBaseForm extends React.Component<
   IContractFormProps,
   IContractFormState
 > {
-
   private logic = new ContractFormLogic();
-
+  private id = undefined;
+  
   constructor(props: IContractFormProps) {
     super(props);
-
+    
     this.state = {
       form: this.logic.createEmptyForm(),
       errors: {},
@@ -25,22 +26,24 @@ export default class ContractDataBaseForm extends React.Component<
       resetUser: false
     };
   }
-
-  public async componentDidMount() {
-    const [departments, typeOfContract, contractBasis] = await Promise.all([
+  
+  public async componentDidMount(): Promise<void> {
+    const [departments ] = await Promise.all([
       this.logic.getDepartments(),
-      this.logic.getTypeOfContract(),
-      this.logic.getContractBasis()
     ]);
 
     this.setState({
       departments: departments,
-      typeOfContract: typeOfContract,
-      contractBasis: contractBasis,
     });
 
-    const prefilledData = await this.logic.getContractForm();    
-    this.convertPrefilledData(prefilledData);
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get("itemID");
+    this.id = idParam ? parseInt(idParam, 10) : undefined;
+
+    if (this.id !== undefined) { 
+      const prefilledData = await this.logic.getContractForm(this.id); 
+      this.convertPrefilledData(prefilledData);
+    }
   }
 
   private handleInputChange = (name: string, value: any) => {
@@ -61,7 +64,14 @@ export default class ContractDataBaseForm extends React.Component<
       this.setState({ errors });
       return;
     }
-    const response = await this.logic.submit(this.state.form);
+
+    let response: APIResponse;
+
+    if (this.id !== undefined) { 
+      response = await this.logic.submit(this.state.form);
+    } else {
+      response = await this.logic.editForm(this.state.form, this.id);
+    }
 
     if (response.success) {
       this.setState({
@@ -96,7 +106,7 @@ export default class ContractDataBaseForm extends React.Component<
     });
   }
   
-  public render() {
+  public render(): JSX.Element {
     return (
       <ContractFormView
         form={this.state.form}

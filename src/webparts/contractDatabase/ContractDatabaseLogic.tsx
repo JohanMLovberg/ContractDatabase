@@ -1,29 +1,30 @@
 import { ContractFormData } from "../../models/ContractDatabaseModel";
 import { IDepartment } from "../../mock/departments";
 import contractBaseApi from "../../services/ContractDatabaseApi";
-import { IContractBasis } from "../../mock/contractBasis";
-import { ITypeOfContract } from "../../mock/TypeOfContract";
+import { formatDateToSPFx } from "../../utils/dateUtils";
+import { APIResponse } from "../../models/ApiModel";
 
 export class ContractFormLogic {
   private api = new contractBaseApi();
 
   public createEmptyForm(): ContractFormData {
     return {
-      title: "",
-      contractOwner: "",
-      originalContractOwner: "",
-      department: "",
-      value: "",
-      startDate: "",
-      endDate: "",
-      typeOfContract: "",
-      contractBasis: "",
-      agreementNumber: "",
-      vendor: "",
-      vendorId: "",
-      archiveLink: "",
-      dataProcessAgreement: false,
-      labourClause: false
+      Title: "",
+      ContractOwner: "",
+      OriginalContractOwner: "",
+      Department: "",
+      Value: "",
+      StartDate: "",
+      EndDate: "",
+      TypeOfContract: "",
+      ContractBasis: "",
+      AgreementNumber: "",
+      Vendor: "",
+      VendorID: "",
+      ArchiveLink: "",
+      DataProcessingAgreement: false,
+      LabourClause: false,
+      LabourClauseRiskAssessment: ""
     };
   }
 
@@ -32,31 +33,50 @@ export class ContractFormLogic {
     name: string,
     value: any
   ): ContractFormData {
+
     return {...form,[name]: value};
   }
 
-  public validate(form: ContractFormData) {
+  public validate(form: ContractFormData):{[key: string]: string;} {
     const errors: { [key: string]: string } = {};
 
-    if (!form.title) errors.title = "Title is required";
-    if (!form.department) errors.department = "Department is required";
-    if (!form.value) errors.value = "Value is required";
-    if (!form.typeOfContract) errors.typeOfContract = "Type of contract required";
-    if (!form.startDate) errors.startDate = "Start date required";
-    if (!form.endDate) errors.endDate = "End date required";
-    if (form.startDate && form.endDate && form.endDate < form.startDate) {
+    if (!form.Title) errors.title = "Title is required";
+    if (!form.Department) errors.department = "Department is required";
+    if (!form.Value) errors.value = "Value is required";
+    if (!form.TypeOfContract) errors.typeOfContract = "Type of contract required";
+    if (!form.StartDate) errors.startDate = "Start date required";
+    if (!form.EndDate) errors.endDate = "End date required";
+    if (form.StartDate && form.EndDate && form.EndDate < form.StartDate) {
       errors.endDate = "End date must be after start date";
+    }
+    if(form.LabourClause && !form.LabourClauseRiskAssessment) {
+      errors.LabourClauseRiskAssessment = "Labour Clause Risk Assessment required";
     }
     return errors;
   }
 
-  public async submit(form: ContractFormData) {
+  public async submit(form: ContractFormData): Promise<APIResponse> {
+    form.EndDate = formatDateToSPFx(form.EndDate);
+    form.StartDate = formatDateToSPFx(form.StartDate);
     return this.api.submitContractDatabase(form);
   }
 
-  public async getUsers(filterText: string) {
+  public async editForm(form: ContractFormData, id: number): Promise<APIResponse> {
+    form.EndDate = formatDateToSPFx(form.EndDate);
+    form.StartDate = formatDateToSPFx(form.StartDate);
+    return this.api.editContractDatabaseForm(form, id);
+  }
+
+  public async getUsers(filterText: string): Promise<{
+    key: string;
+    text: string;
+    primaryText: string;
+    secondaryText: string;
+    tertiaryText: string;
+    optionalText: string;
+    }[]> {
     if (!filterText) return [];
-    const users = await this.api.peoplePickerMock(filterText);
+    const users = await this.api.peoplePicker(filterText);
     return users.map(u => ({
       key: u.Key,
       text: u.DisplayText,
@@ -68,18 +88,10 @@ export class ContractFormLogic {
   }
 
   public async getDepartments(): Promise<IDepartment[]> {
-    return this.api.getDepartmentListMock();
+    return this.api.getDepartmentList();
   }
 
-  public async getTypeOfContract(): Promise<ITypeOfContract[]> {
-    return this.api.getTypeOfContractListMock();
-  }
-
-  public async getContractBasis(): Promise<IContractBasis[]> {
-    return this.api.getContractBasisListMock();
-  }
-
-  public async getContractForm(): Promise<ContractFormData> {
-    return this.api.getContractFormMock();
+  public async getContractForm(id?: number): Promise<ContractFormData> {
+    return this.api.getContractFormById(id);
   }
 }

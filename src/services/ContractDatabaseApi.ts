@@ -4,18 +4,27 @@ import { PeoplePickerEntity, sp, PeoplePickerEntityData } from 'sp-pnp-js';
 import { SPpeople } from "../mock/people";
 import { IDepartment, mockDepartments } from "../mock/departments";
 import { ContractFormData } from "../models/ContractDatabaseModel";
-import { ITypeOfContract, mockTypeOfContract } from "../mock/TypeOfContract";
-import { IContractBasis, mockContractBasis } from "../mock/contractBasis";
 import { mockContractFormData } from "../mock/PreMadeFormData";
+import { formatDateTime } from '../utils/dateUtils';
+import { YesNoToBoolean } from "../utils/booleanUtils";
 
 export default class ContractDatabaseApi extends BaseApi {
-  
+
   public async submitContractDatabase(
     formData: ContractFormData
   ): Promise<APIResponse> {
     console.log(formData);
     return this.handleRequest(() => this.apiClient.get('/posts'));
   }
+
+  public async editContractDatabaseForm(
+    formData: ContractFormData,
+    id: number
+  ): Promise<APIResponse> {
+    console.log(formData, id);
+    return this.handleRequest(() => this.apiClient.get(`/posts(${id})`));
+  }
+
 
   public async peoplePicker(inputString: string): Promise<PeoplePickerEntity[]> {
     const users = await sp.profiles.clientPeoplePickerSearchUser({
@@ -63,33 +72,66 @@ export default class ContractDatabaseApi extends BaseApi {
     return await mockDepartments;
   }
 
-  public async getTypeOfContractList(): Promise<ITypeOfContract[]> {
-    const allLists = await sp.web.lists.select("Label", "Value").get();
-    const typeOfContractList = allLists.find(l => l.Title === "TypeOfContract");
-    if (!typeOfContractList) return [];
+  public async getContractFormById(id?: number): Promise<ContractFormData | null> {
+    if (!id) return null;
 
-    let items: ITypeOfContract[] = await sp.web.lists.getById(typeOfContractList.Id).items.get();
-    return items;
-  }
+    try {
+      const item = await sp.web.lists
+        .getByTitle("Contract Database")
+        .items.getById(id)
+        .select(
+          "Title",
+          "ContractOwner/Id",
+          "ContractOwner/Title",
+          "OriginalContractOwner",
+          "Department/Id",
+          "Department/Title",
+          "Value",
+          "StartDate",
+          "EndDate",
+          "TypeOfContract",
+          "ContractBasis",
+          "AgreementNumber",
+          "Vendor",
+          "VendorID",
+          "ArchiveLink",
+          "DataProcessingAgreement",
+          "LabourClause",
+          "LabourClauseRiskAssessment"
+        )
+        .expand("ContractOwner", "Department")
+        .get();
 
-  public async getTypeOfContractListMock(): Promise<ITypeOfContract[]> {
-    return await mockTypeOfContract;
-  }
+      const contractForm: ContractFormData = {
+        Title: item.Title,
+        ContractOwner: item.ContractOwner.Title,
+        OriginalContractOwner: item.OriginalContractOwner,
+        Department: item.Department.Title,
+        Value: item.Value,
+        StartDate: formatDateTime(item.StartDate),
+        EndDate: formatDateTime(item.EndDate),
+        TypeOfContract: item.TypeOfContract,
+        ContractBasis: item.ContractBasis,
+        AgreementNumber: item.AgreementNumber,
+        Vendor: item.Vendor,
+        VendorID: item.VendorID,
+        ArchiveLink: item.ArchiveLink,
+        DataProcessingAgreement: YesNoToBoolean(item.DataProcessingAgreement),
+        LabourClause: YesNoToBoolean(item.LabourClause),
+        LabourClauseRiskAssessment: item.LabourClauseRiskAssessment
+      };
 
-  public async getContractBasisList(): Promise<IContractBasis[]> {
-    const allLists = await sp.web.lists.select("Label", "Value").get();
-    const contractBasisList = allLists.find(l => l.Title === "ContractBasis");
-    if (!contractBasisList) return [];
-
-    let items: IContractBasis[] = await sp.web.lists.getById(contractBasisList.Id).items.get();
-    return items;
-  }
-
-  public async getContractBasisListMock(): Promise<IContractBasis[]> {
-    return await mockContractBasis;
+      return contractForm;
+    } catch (error) {
+      console.error("Error fetching contract item:", error);
+      return null;
+    }
   }
 
   public async getContractFormMock(): Promise<ContractFormData> {
-    return await mockContractFormData;
+    const mockdata = await mockContractFormData;
+    mockdata.EndDate = formatDateTime(mockdata.EndDate)
+    mockdata.StartDate = formatDateTime(mockdata.StartDate)
+    return mockdata
   }
 }
