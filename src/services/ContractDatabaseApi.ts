@@ -14,7 +14,12 @@ export default class ContractDatabaseApi extends BaseApi {
     formData: ContractFormData
   ): Promise<APIResponse> {
     console.log(formData);
-    return this.handleRequest(() => this.apiClient.get('/posts'));
+    return this.handleRequest(() =>
+      this.apiClient.post(
+        "/_api/web/lists/getByTitle('Contract Database')/items",
+        formData
+      )
+    );
   }
 
   public async editContractDatabaseForm(
@@ -22,9 +27,13 @@ export default class ContractDatabaseApi extends BaseApi {
     id: number
   ): Promise<APIResponse> {
     console.log(formData, id);
-    return this.handleRequest(() => this.apiClient.get(`/posts(${id})`));
+        return this.handleRequest(() =>
+      this.apiClient.post(
+          `/_api/web/lists/getByTitle('Contract Database')/items(${id})`,
+        formData
+      )
+    );
   }
-
 
   public async peoplePicker(inputString: string): Promise<PeoplePickerEntity[]> {
     const users = await sp.profiles.clientPeoplePickerSearchUser({
