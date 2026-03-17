@@ -2,35 +2,44 @@ import { APIResponse } from "../models/ApiModel";
 import BaseApi from "./BaseApi";
 import { PeoplePickerEntity, sp, PeoplePickerEntityData } from 'sp-pnp-js';
 import { SPpeople } from "../mock/people";
-import { IDepartment, mockDepartments } from "../mock/departments";
+import { mockDepartments } from "../mock/departments";
 import { ContractFormData } from "../models/ContractDatabaseModel";
 import { mockContractFormData } from "../mock/PreMadeFormData";
-import { formatDateTime } from '../utils/dateUtils';
+import { formatDateTimeForForm } from '../utils/dateUtils';
 import { YesNoToBoolean } from "../utils/booleanUtils";
+import { IDepartment } from "../models/Department";
 
 export default class ContractDatabaseApi extends BaseApi {
 
-  public async submitContractDatabase(
-    formData: ContractFormData
-  ): Promise<APIResponse> {
-    console.log(formData);
+  public async submitContractDatabase(formData: ContractFormData): Promise<APIResponse> {
+    // Add metadata type for SharePoint
+    const payload = {
+      __metadata: { type: "SP.Data.ContractdatabaseListItem" },
+      ...formData
+    };
+
     return this.handleRequest(() =>
-      this.apiClient.post(
-        "/_api/web/lists/getByTitle('Contract Database')/items",
-        formData
-      )
+      this.apiClient.post("/_api/web/lists/getByTitle('Contract Database')/items", payload)
     );
   }
 
-  public async editContractDatabaseForm(
-    formData: ContractFormData,
-    id: number
-  ): Promise<APIResponse> {
-    console.log(formData, id);
-        return this.handleRequest(() =>
+  // Update an existing list item
+  public async editContractDatabaseForm(formData: ContractFormData, id: number): Promise<APIResponse> {
+    const payload = {
+      __metadata: { type: "SP.Data.ContractdatabaseListItem" },
+      ...formData
+    };
+
+    return this.handleRequest(() =>
       this.apiClient.post(
-          `/_api/web/lists/getByTitle('Contract Database')/items(${id})`,
-        formData
+        `/_api/web/lists/getByTitle('Contract Database')/items(${id})`,
+        payload,
+        {
+          headers: {
+            "X-HTTP-Method": "MERGE",
+            "IF-MATCH": "*"
+          }
+        }
       )
     );
   }
@@ -113,12 +122,12 @@ export default class ContractDatabaseApi extends BaseApi {
 
       const contractForm: ContractFormData = {
         Title: item.Title,
-        ContractOwner: item.ContractOwner.Title,
+        ContractOwner: item.ContractOwner,
         OriginalContractOwner: item.OriginalContractOwner,
-        Department: item.Department.Title,
+        Department: item.Department,
         Value: item.Value,
-        StartDate: formatDateTime(item.StartDate),
-        EndDate: formatDateTime(item.EndDate),
+        StartDate: formatDateTimeForForm(item.StartDate),
+        EndDate: formatDateTimeForForm(item.EndDate),
         TypeOfContract: item.TypeOfContract,
         ContractBasis: item.ContractBasis,
         AgreementNumber: item.AgreementNumber,
@@ -139,8 +148,8 @@ export default class ContractDatabaseApi extends BaseApi {
 
   public async getContractFormMock(): Promise<ContractFormData> {
     const mockdata = await mockContractFormData;
-    mockdata.EndDate = formatDateTime(mockdata.EndDate)
-    mockdata.StartDate = formatDateTime(mockdata.StartDate)
+    mockdata.EndDate = formatDateTimeForForm(mockdata.EndDate)
+    mockdata.StartDate = formatDateTimeForForm(mockdata.StartDate)
     return mockdata
   }
 }

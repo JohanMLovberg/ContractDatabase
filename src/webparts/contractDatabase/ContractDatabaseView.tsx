@@ -17,6 +17,7 @@ import {
 export default class ContractFormView extends React.Component<IViewProps, {}> {
 
   public render(): React.ReactElement<IViewProps> {
+    console.log(this.props.form);
     return (
       <form onSubmit={this.props.onSubmit} className="formContainer">
         <div className="titleRow">
@@ -35,14 +36,17 @@ export default class ContractFormView extends React.Component<IViewProps, {}> {
           required={true}
           errors={this.props.errors.title}
         />
-        <UserPicker
-          value={this.props.form.ContractOwner}
-          label="Contract Owner"
-          itemLimit={1}
-          onUserSelected={(user) => this.props.onInputChange('contractOwner', user ? user.primaryText : '')}
-          onResolveSuggestions={this.props.onResolveSuggestions}
-          clearSelection={this.props.resetUser}
-        />
+          <UserPicker
+            value={this.props.form.ContractOwner.name}
+            keyValue={this.props.form.ContractOwner.id}
+            label="Contract Owner"
+            itemLimit={1}
+            onUserSelected={(user) =>
+              this.props.onInputChange('ContractOwner', user)
+            }
+            onResolveSuggestions={this.props.onResolveSuggestions}
+            clearSelection={this.props.resetUser}
+          />
         <InputField
           name={'OriginalContractOwner'}
           value={this.props.form.OriginalContractOwner}
@@ -52,14 +56,14 @@ export default class ContractFormView extends React.Component<IViewProps, {}> {
         <DropDownField
           name="Department"
           label="Department"
-          value={this.props.form.Department}
+          value={this.props.form.Department ? String(this.props.form.Department.Id) : ""}
           required
           errors={this.props.errors.department}
           onChange={this.props.onInputChange}
           options={
             this.props.departments
               ? this.props.departments.map((department) => ({
-                value: department.Title,
+                value: department.Id,
                 label: department.Title
               }))
               : []

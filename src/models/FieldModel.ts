@@ -51,8 +51,8 @@ export interface IRadioButtonProps {
 export interface IDropDownFieldProps {
   name: string;
   label: string;
-  value: string;
-  options: { value: string; label: string }[];
+  value: number | string;
+  options: { value: number | string; label: string | number }[];
   className?: string;
   required?: boolean;
   errors?: string;
@@ -83,7 +83,8 @@ export interface ICheckboxProps {
 export interface IUserPickerProps {
   onResolveSuggestions: (filterText: string) => Promise<IPersonaProps[]>;
   value: string;
-  onUserSelected?: (user: IPersonaProps | null) => void;
+  keyValue: string;
+  onUserSelected?: (user: { id: string | null; name: string }) => void;
   itemLimit: number;
   label: string;
   required?: boolean;

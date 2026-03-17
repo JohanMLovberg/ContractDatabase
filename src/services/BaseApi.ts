@@ -10,18 +10,18 @@ export default class BaseApi {
 
   protected async handleRequest<T>(request: () => Promise<T> ): Promise<APIResponse> {
     try {
-	  const data = await request();
-	  return {
-	  	success: true,
-		  message: "Submission successful",
-		  data
-	  };
+			const data = await request();
+			return {
+				success: true,
+				message: "Submission successful",
+				data
+			};
     } catch (error) {
-	    console.log(error.message)
-	    return {
-        success: false,
-		    message: error.message
-	    };
+			console.log(error.message)
+			return {
+				success: false,
+				message: error.message
+			};
     }
-  }
+	}
 }

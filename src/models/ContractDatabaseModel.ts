@@ -1,13 +1,14 @@
-import { IDepartment } from "../mock/departments";
 import { IPersonaProps } from 'office-ui-fabric-react';
 import { IDropDownData } from "./ConstsModel";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { Contractowner } from "./ContractOwner";
+import { IDepartment } from "./Department";
 
 export interface ContractFormData {
   Title: string;
-  ContractOwner: string;
+  ContractOwner: Contractowner;
   OriginalContractOwner: string;
-  Department: string;
+  Department: IDepartment;
   Value: string;
   StartDate: string;
   EndDate: string;

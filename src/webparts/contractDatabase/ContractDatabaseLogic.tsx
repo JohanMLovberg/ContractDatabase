@@ -1,9 +1,9 @@
 import { ContractFormData } from "../../models/ContractDatabaseModel";
-import { IDepartment } from "../../mock/departments";
 import contractBaseApi from "../../services/ContractDatabaseApi";
-import { formatDateToSPFx } from "../../utils/dateUtils";
+import { formatDateTimeForForm } from "../../utils/dateUtils";
 import { APIResponse } from "../../models/ApiModel";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { IDepartment } from "../../models/Department";
 
 export class ContractFormLogic {
   private api: contractBaseApi;
@@ -15,9 +15,17 @@ export class ContractFormLogic {
   public createEmptyForm(): ContractFormData {
     return {
       Title: "",
-      ContractOwner: "",
+      ContractOwner: 
+      {
+        id: null, 
+        name: ""
+      },
       OriginalContractOwner: "",
-      Department: "",
+      Department: 
+      {
+        Id: null,
+        Title: ""
+      },
       Value: "",
       StartDate: "",
       EndDate: "",
@@ -42,7 +50,7 @@ export class ContractFormLogic {
     return {...form,[name]: value};
   }
 
-  public validate(form: ContractFormData):{[key: string]: string;} {
+  public validate(form: ContractFormData): {[key: string]: string;} {
     const errors: { [key: string]: string } = {};
 
     if (!form.Title) errors.title = "Title is required";
@@ -61,14 +69,16 @@ export class ContractFormLogic {
   }
 
   public async submit(form: ContractFormData): Promise<APIResponse> {
-    form.EndDate = formatDateToSPFx(form.EndDate);
-    form.StartDate = formatDateToSPFx(form.StartDate);
+    form.EndDate = formatDateTimeForForm(form.EndDate);
+    form.StartDate = formatDateTimeForForm(form.StartDate);
+    console.log(form);
     return this.api.submitContractDatabase(form);
   }
 
   public async editForm(form: ContractFormData, id: number): Promise<APIResponse> {
-    form.EndDate = formatDateToSPFx(form.EndDate);
-    form.StartDate = formatDateToSPFx(form.StartDate);
+    form.EndDate = formatDateTimeForForm(form.EndDate);
+    form.StartDate = formatDateTimeForForm(form.StartDate);
+    console.log(form);
     return this.api.editContractDatabaseForm(form, id);
   }
 
@@ -81,7 +91,7 @@ export class ContractFormLogic {
     optionalText: string;
     }[]> {
     if (!filterText) return [];
-    const users = await this.api.peoplePicker(filterText);
+    const users = await this.api.peoplePickerMock(filterText);
     return users.map(u => ({
       key: u.Key,
       text: u.DisplayText,
@@ -93,10 +103,10 @@ export class ContractFormLogic {
   }
 
   public async getDepartments(): Promise<IDepartment[]> {
-    return this.api.getDepartmentList();
+    return this.api.getDepartmentListMock();
   }
 
   public async getContractForm(id?: number): Promise<ContractFormData> {
-    return this.api.getContractFormById(id);
+    return this.api.getContractFormMock();
   }
 }
