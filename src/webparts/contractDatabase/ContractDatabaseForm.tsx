@@ -38,14 +38,14 @@ export default class ContractDataBaseForm extends React.Component<
       departments: departments,
     });
 
-/*     const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.search);
     const idParam = params.get("itemID");
     this.id = idParam ? parseInt(idParam, 10) : undefined;
 
-    if (this.id !== undefined) {  */
+    if (this.id !== undefined) { 
       const prefilledData = await this.logic.getContractForm(this.id); 
       this.convertPrefilledData(prefilledData);
-/*     } */
+    }
   }
 
   private handleInputChange = (name: string, value: any) => {

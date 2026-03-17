@@ -91,7 +91,7 @@ export class ContractFormLogic {
     optionalText: string;
     }[]> {
     if (!filterText) return [];
-    const users = await this.api.peoplePickerMock(filterText);
+    const users = await this.api.peoplePicker(filterText);
     return users.map(u => ({
       key: u.Key,
       text: u.DisplayText,
@@ -103,10 +103,10 @@ export class ContractFormLogic {
   }
 
   public async getDepartments(): Promise<IDepartment[]> {
-    return this.api.getDepartmentListMock();
+    return this.api.getDepartmentList();
   }
 
   public async getContractForm(id?: number): Promise<ContractFormData> {
-    return this.api.getContractFormMock();
+    return this.api.getContractFormById(id);
   }
 }
