@@ -11,12 +11,14 @@ export default class ContractDataBaseForm extends React.Component<
   IContractFormProps,
   IContractFormState
 > {
-  private logic = new ContractFormLogic();
+  private logic: ContractFormLogic;
   private id = undefined;
-  
+
   constructor(props: IContractFormProps) {
     super(props);
-    
+
+    this.logic = new ContractFormLogic(this.props.context);
+
     this.state = {
       form: this.logic.createEmptyForm(),
       errors: {},
@@ -47,14 +49,46 @@ export default class ContractDataBaseForm extends React.Component<
   }
 
   private handleInputChange = (name: string, value: any) => {
-    const updatedForm = this.logic.updateField(this.state.form, name, value);
-    const { [name]: removed, ...updatedErrors } = this.state.errors;
+    if (name === "Department") {
+      this.handleDepartmentInput(value);
 
-    this.setState({
-      form: updatedForm,
-      errors: updatedErrors
-    });
+    } else if (name === "LabourClause" && value === false) {
+      this.handleLabourClauseInput();
+
+    } else {
+      const updatedForm = this.logic.updateField(this.state.form, name, value);
+      const { [name]: removed, ...updatedErrors } = this.state.errors;
+
+        this.setState({
+        form: updatedForm,
+        errors: updatedErrors
+      });
+    }
   };
+
+  private handleDepartmentInput(value: Number): void {
+    const departmentValue = Number(value);
+    const departmentArray = this.state.departments.filter(function(d) {
+      return d.Id === departmentValue;
+    });
+    const department = departmentArray.length > 0 ? departmentArray[0] : { Id: null, Title: "" };
+    this.setState(prev => ({
+      form: {
+        ...prev.form,
+        Department: department
+      }
+    }));
+  }
+
+  private handleLabourClauseInput(): void {
+    this.setState(prev => ({
+      form: {
+        ...prev.form,
+        LabourClause: false,
+        LabourClauseRiskAssessment: ''
+      }
+    }));
+  }
 
   private handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,6 +104,7 @@ export default class ContractDataBaseForm extends React.Component<
     if (this.id !== undefined) { 
       response = await this.logic.submit(this.state.form);
     } else {
+      console.log(this.state.form);
       response = await this.logic.editForm(this.state.form, this.id);
     }
 

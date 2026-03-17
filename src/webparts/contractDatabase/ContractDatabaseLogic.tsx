@@ -1,18 +1,31 @@
 import { ContractFormData } from "../../models/ContractDatabaseModel";
-import { IDepartment } from "../../mock/departments";
 import contractBaseApi from "../../services/ContractDatabaseApi";
-import { formatDateToSPFx } from "../../utils/dateUtils";
+import { formatDateTimeForForm } from "../../utils/dateUtils";
 import { APIResponse } from "../../models/ApiModel";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { IDepartment } from "../../models/Department";
 
 export class ContractFormLogic {
-  private api = new contractBaseApi();
+  private api: contractBaseApi;
+
+    constructor(context: WebPartContext) {
+    this.api = new contractBaseApi(context.pageContext.web.absoluteUrl);
+  }
 
   public createEmptyForm(): ContractFormData {
     return {
       Title: "",
-      ContractOwner: "",
+      ContractOwner: 
+      {
+        id: null, 
+        name: ""
+      },
       OriginalContractOwner: "",
-      Department: "",
+      Department: 
+      {
+        Id: null,
+        Title: ""
+      },
       Value: "",
       StartDate: "",
       EndDate: "",
@@ -37,7 +50,7 @@ export class ContractFormLogic {
     return {...form,[name]: value};
   }
 
-  public validate(form: ContractFormData):{[key: string]: string;} {
+  public validate(form: ContractFormData): {[key: string]: string;} {
     const errors: { [key: string]: string } = {};
 
     if (!form.Title) errors.title = "Title is required";
@@ -56,14 +69,16 @@ export class ContractFormLogic {
   }
 
   public async submit(form: ContractFormData): Promise<APIResponse> {
-    form.EndDate = formatDateToSPFx(form.EndDate);
-    form.StartDate = formatDateToSPFx(form.StartDate);
+    form.EndDate = formatDateTimeForForm(form.EndDate);
+    form.StartDate = formatDateTimeForForm(form.StartDate);
+    console.log(form);
     return this.api.submitContractDatabase(form);
   }
 
   public async editForm(form: ContractFormData, id: number): Promise<APIResponse> {
-    form.EndDate = formatDateToSPFx(form.EndDate);
-    form.StartDate = formatDateToSPFx(form.StartDate);
+    form.EndDate = formatDateTimeForForm(form.EndDate);
+    form.StartDate = formatDateTimeForForm(form.StartDate);
+    console.log(form);
     return this.api.editContractDatabaseForm(form, id);
   }
 

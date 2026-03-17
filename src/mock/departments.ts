@@ -1,7 +1,4 @@
-export type IDepartment = {
-  Id: number;
-  Title: string;
-}
+import { IDepartment } from "../models/Department";
 
 export const mockDepartments: IDepartment[] = [
   { Id: 1, Title: "Human Resources" },
@@ -13,4 +10,3 @@ export const mockDepartments: IDepartment[] = [
   { Id: 7, Title: "Research & Development" },
   { Id: 8, Title: "Operations" },
 ];
-

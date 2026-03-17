@@ -20,16 +20,24 @@ export default class ApiClient {
     } = options;
 
     const url = `${this.baseUrl}${endpoint}`;
-
     let attempt = 0;
+
+    // Only get the digest for non-GET requests
+    let digest = '';
+    if (method !== 'GET') {
+      const digestElement = document.getElementById("__REQUESTDIGEST") as HTMLInputElement;
+      digest = digestElement ? digestElement.value : '';
+    }
 
     while (true) {
       try {
         const response = await fetch(url, {
           method,
+          credentials: "same-origin",
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Accept': 'application/json;odata=verbose',
+            'Content-Type': 'application/json;odata=verbose',
+            ...(method !== 'GET' ? { 'X-RequestDigest': digest } : {}),
             ...headers
           },
           body: body ? JSON.stringify(body) : undefined
@@ -51,7 +59,6 @@ export default class ApiClient {
           attempt++;
           continue;
         }
-
         throw error;
       }
     }

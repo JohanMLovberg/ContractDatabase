@@ -12,7 +12,10 @@ export default class ContractDatabaseWebPart extends BaseClientSideWebPart<ICont
     this.renderReactComponent<IContractFormProps>(
       this.domElement,
       ContractDataBaseForm,
-      { description: this.properties.description }
+      { 
+        description: this.properties.description,
+        context: this.context
+      }
     );
   }
   private renderReactComponent<T>(
