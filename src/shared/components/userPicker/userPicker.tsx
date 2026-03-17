@@ -13,13 +13,25 @@ export default class UserPicker extends React.Component<IUserPickerProps, IUserP
   }
 
 	public componentDidUpdate(prevProps: IUserPickerProps): void {
-		if (this.props.clearSelection !== prevProps.clearSelection) {
-			this.clearSelection();
-		}
-		if (this.props.value) {
-			this.setState({
-				selectedItems: [{ primaryText: this.props.value }]
-			});
+    if (this.props.clearSelection !== prevProps.clearSelection && this.props.clearSelection) {
+      this.clearSelection();
+    }
+		if (
+			this.props.value !== prevProps.value ||
+			this.props.keyValue !== prevProps.keyValue
+		) {
+			if (this.props.value && this.props.keyValue) {
+			const current = this.state.selectedItems[0];
+			if (!current || current.optionalText !== this.props.keyValue) {
+				this.setState({
+				selectedItems: [{
+					key: this.props.keyValue,
+					primaryText: this.props.value,
+					optionalText: this.props.keyValue
+				} as IPersonaProps]
+				});
+			}
+			}
 		}
 	}
 	
@@ -29,18 +41,18 @@ export default class UserPicker extends React.Component<IUserPickerProps, IUserP
 
 		this.setState({ selectedItems: safeItems });
 
-		if (this.props.onUserSelected) {
-			this.props.onUserSelected(selected);
-		}
-	};
+  if (this.props.onUserSelected) {
+    this.props.onUserSelected(
+      selected
+        ? { id: selected.optionalText, name: selected.primaryText }
+        : { id: null, name: "" }
+    );
+  }
+};
 
-	private clearSelection(): void {
-		this.setState({ selectedItems: [] });
-
-		if (this.props.onUserSelected) {
-			this.props.onUserSelected(null);
-		}
-	};
+  private clearSelection(): void {
+    this.setState({ selectedItems: [] });
+  }
 
 	public render(): React.ReactElement<IUserPickerProps> {
     return (
@@ -48,9 +60,9 @@ export default class UserPicker extends React.Component<IUserPickerProps, IUserP
         {this.props.label && (
           <div className="formLabel">
             {this.props.label}
-						{this.props.required && 
-							<span className="required">*</span>
-						}
+			{this.props.required && 
+				<span className="required">*</span>
+			}
           </div>
         )}
         <div className="formControl">
