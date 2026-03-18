@@ -1,9 +1,9 @@
 import { ContractFormData } from "../../models/ContractDatabaseModel";
 import contractBaseApi from "../../services/ContractDatabaseApi";
-import { formatDateTimeForForm } from "../../utils/dateUtils";
 import { APIResponse } from "../../models/ApiModel";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { IDepartment } from "../../models/Department";
+import { formatingForm } from "../../utils/formatForm";
 
 export class ContractFormLogic {
   private api: contractBaseApi;
@@ -17,8 +17,8 @@ export class ContractFormLogic {
       Title: "",
       ContractOwner: 
       {
-        id: null, 
-        name: ""
+        Id: null, 
+        Title: ""
       },
       OriginalContractOwner: "",
       Department: 
@@ -69,17 +69,13 @@ export class ContractFormLogic {
   }
 
   public async submit(form: ContractFormData): Promise<APIResponse> {
-    form.EndDate = formatDateTimeForForm(form.EndDate);
-    form.StartDate = formatDateTimeForForm(form.StartDate);
-    console.log(form);
-    return this.api.submitContractDatabase(form);
+    const submitForm = formatingForm(form);
+    return this.api.submitContractDatabase(submitForm);
   }
 
   public async editForm(form: ContractFormData, id: number): Promise<APIResponse> {
-    form.EndDate = formatDateTimeForForm(form.EndDate);
-    form.StartDate = formatDateTimeForForm(form.StartDate);
-    console.log(form);
-    return this.api.editContractDatabaseForm(form, id);
+    const submitForm = formatingForm(form);
+    return this.api.editContractDatabaseForm(submitForm, id);
   }
 
   public async getUsers(filterText: string): Promise<{

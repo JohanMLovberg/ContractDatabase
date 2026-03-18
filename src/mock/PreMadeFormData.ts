@@ -4,8 +4,8 @@ export const mockContractFormData: ContractFormData = {
   Title: "IT Support Agreement",
   ContractOwner: 
   {
-    id: "i:0#.w|mikkel.jensen",
-    name: "Mikkel Jensen"
+    Id: "i:0#.w|mikkel.jensen",
+    Title: "Mikkel Jensen"
   },
   OriginalContractOwner: "Jane Smith",
   Department: 

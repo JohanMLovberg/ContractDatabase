@@ -1,4 +1,4 @@
 export interface Contractowner {
-  id: string;
-  name: string;
+  Id: string;
+  Title: string;
 }

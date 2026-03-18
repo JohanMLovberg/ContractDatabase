@@ -23,6 +23,25 @@ export interface ContractFormData {
   LabourClauseRiskAssessment: string;
 }
 
+export interface SubmitContractFormData {
+  Title: string;
+  ContractOwner: string;
+  OriginalContractOwner: string;
+  Department: number;
+  Value: number;
+  StartDate: string;
+  EndDate: string;
+  TypeOfContract: string;
+  ContractBasis: string;
+  AgreementNumber: string;
+  Vendor: string;
+  VendorID: string;
+  ArchiveLink: string;
+  DataProcessingAgreement: boolean;
+  LabourClause: boolean;
+  LabourClauseRiskAssessment: string;
+}
+
 export interface IContractFormProps {
   description: string;
   context: WebPartContext;
