@@ -3,7 +3,7 @@ import BaseApi from "./BaseApi";
 import { PeoplePickerEntity, sp, PeoplePickerEntityData } from 'sp-pnp-js';
 import { SPpeople } from "../mock/people";
 import { mockDepartments } from "../mock/departments";
-import { ContractFormData } from "../models/ContractDatabaseModel";
+import { ContractFormData, SubmitContractFormData } from "../models/ContractDatabaseModel";
 import { mockContractFormData } from "../mock/PreMadeFormData";
 import { formatDateTimeForForm } from '../utils/dateUtils';
 import { YesNoToBoolean } from "../utils/booleanUtils";
@@ -11,7 +11,7 @@ import { IDepartment } from "../models/Department";
 
 export default class ContractDatabaseApi extends BaseApi {
 
-  public async submitContractDatabase(formData: ContractFormData): Promise<APIResponse> {
+  public async submitContractDatabase(formData: SubmitContractFormData): Promise<APIResponse> {
     // Add metadata type for SharePoint
     const payload = {
       __metadata: { type: "SP.Data.ContractdatabaseListItem" },
@@ -24,7 +24,7 @@ export default class ContractDatabaseApi extends BaseApi {
   }
 
   // Update an existing list item
-  public async editContractDatabaseForm(formData: ContractFormData, id: number): Promise<APIResponse> {
+  public async editContractDatabaseForm(formData: SubmitContractFormData, id: number): Promise<APIResponse> {
     const payload = {
       __metadata: { type: "SP.Data.ContractdatabaseListItem" },
       ...formData

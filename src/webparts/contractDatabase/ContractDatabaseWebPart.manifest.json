@@ -1,20 +1,20 @@
 {
   "$schema": "https://dev.office.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "2c7c0297-8d78-4f53-bd82-00c665bfdf9b",
-  "alias": "ContractDatabaseWebPart",
+  "id": "e8030479-b15b-40eb-a0cf-b4e6603c8ede",
+  "alias": "ContractDatabaseFormWebPart",
   "componentType": "WebPart",
   "version": "*",
   "manifestVersion": 2,
   "requiresCustomScript": false,
-
+ 
   "preconfiguredEntries": [{
-    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "groupId": "2ba420c4-ef83-4f3a-ae37-997078f4fdfb",
     "group": { "default": "Other" },
-    "title": { "default": "ContractDatabase" },
-    "description": { "default": "ContractDatabase description" },
+    "title": { "default": "ContractDatabaseForm" },
+    "description": { "default": "ContractDatabaseForm description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ContractDatabase"
+      "description": "ContractDatabaseForm"
     }
   }]
 }

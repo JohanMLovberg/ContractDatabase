@@ -37,8 +37,8 @@ export default class ContractFormView extends React.Component<IViewProps, {}> {
           errors={this.props.errors.title}
         />
           <UserPicker
-            value={this.props.form.ContractOwner.name}
-            keyValue={this.props.form.ContractOwner.id}
+            value={this.props.form.ContractOwner.Title}
+            keyValue={this.props.form.ContractOwner.Id}
             label="Contract Owner"
             itemLimit={1}
             onUserSelected={(user) =>
